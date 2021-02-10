@@ -11,12 +11,13 @@ pipeline {
                 sh "docker build . -t cloudiardocker/nodeapp:${DOCKER_TAG}"
             }
         }
-        stage('DockerHub push') {
+        stage ('DockerHub push') {
             steps{
                 script{
                     docker.withRegistry('',registryCredential){
                     sh "docker push cloudiardocker/nodeapp:${DOCKER_TAG}"
                 }
+            }
             }
         }
         stage('Deploy to Kubernetes') {
@@ -35,7 +36,6 @@ pipeline {
     
                 }
             }
-        }
         }
     }
 }
