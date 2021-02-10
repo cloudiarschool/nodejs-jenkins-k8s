@@ -16,9 +16,9 @@ pipeline {
                 script{
                     docker.withRegistry('',registryCredential){
                     sh "docker push cloudiardocker/nodeapp:${DOCKER_TAG}"
-                    }
                 }
             }
+        }
         stage('Deploy to Kubernetes') {
             steps {
                 sh "chmod +x changeTag.sh"
