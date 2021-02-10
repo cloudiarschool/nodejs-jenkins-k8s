@@ -2,11 +2,22 @@ pipeline {
     agent any
     environment {
         DOCKER_TAG = getDockerTag()
+        registry = "cloudiardocker/nodeapp"
+        registryCredential = "dockerhub"
     } 
     stages {
         stage ('Build Docker image') {
             steps {
                 sh "docker build . -t cloudiardocker/nodeapp:${DOCKER_TAG}"
+            }
+        }
+        stage('DockerHub push') {
+            steps{
+                script{
+                    docker.withRegistry('',registryCredential){
+                    sh "docker push cloudiardocker/nodeapp:${DOCKER_TAG}"
+                    }
+                }
             }
         }
     }
